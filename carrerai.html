@@ -160,7 +160,7 @@
                 location: 'San Francisco, CA',
                 posted_on: '3 days ago',
                 source: 'LinkedIn',
-                source_url: '#',
+                source_url: 'https://www.linkedin.com/jobs/',
                 source_icon_svg: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`,
                 keywords: ['React', 'JavaScript', 'Node.js', 'CI/CD', 'Agile', 'Teamwork'],
                 description: 'Join our innovative team to build next-generation user interfaces with React and modern web technologies.'
@@ -172,7 +172,7 @@
                 location: 'New York, NY',
                 posted_on: '1 day ago',
                 source: 'Indeed',
-                source_url: '#',
+                source_url: 'https://www.indeed.com/jobs',
                 source_icon_svg: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.33,3.67A2.021,2.021,0,0,0,18.31,2H5.69A2.021,2.021,0,0,0,3.67,3.67V20.33A2.021,2.021,0,0,0,5.69,22H18.31a2.021,2.021,0,0,0,2.02-2.02ZM9.72,18.28H6.53V9.85H9.72Zm-1.6-9.54a1.8,1.8,0,1,1,1.8-1.8A1.8,1.8,0,0,1,8.12,8.74Zm9.76,9.54H14.7V14.15c0-1-.36-1.65-1.23-1.65a1.33,1.33,0,0,0-1.24,1v4.74H9.05V9.85h3.18v1.47h.04a3.44,3.44,0,0,1,3.1-1.6c3.31,0,3.92,2.18,3.92,5Z"/></svg>`,
                 keywords: ['Python', 'SQL', 'AWS', 'PostgreSQL', 'Data Analysis', 'Docker'],
                 description: 'We are looking for a data engineer to build and maintain our cloud-based data pipelines on AWS.'
@@ -196,7 +196,7 @@
                 location: 'Austin, TX',
                 posted_on: '1 week ago',
                 source: 'LinkedIn',
-                source_url: '#',
+                source_url: 'https://www.linkedin.com/jobs/',
                 source_icon_svg: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`,
                 keywords: ['Product Management', 'Agile', 'Scrum', 'Leadership', 'Communication', 'Problem Solving'],
                 description: 'Define product vision, strategy, and roadmap for our market-leading SaaS platform.'
@@ -410,10 +410,11 @@
                             </div>
                         </div>
                         <div class="mt-6 flex justify-end gap-3">
-                            <button class="btn-action bg-gray-200 text-gray-700 font-semibold py-2 px-5 rounded-lg hover:bg-gray-300" data-action="dismiss">Dismiss</button>
-                            <button class="btn-action ${isSaved ? 'bg-green-600' : 'bg-indigo-600'} text-white font-semibold py-2 px-5 rounded-lg ${isSaved ? 'cursor-not-allowed' : 'hover:bg-indigo-700'}" data-action="save" ${isSaved ? 'disabled' : ''}>
-                                ${isSaved ? 'Saved ✔' : 'Save'}
+                            <button class="btn-action bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300" data-action="dismiss">Dismiss</button>
+                            <button class="btn-action bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-100" data-action="save" ${isSaved ? 'disabled' : ''}>
+                                ${isSaved ? 'Saved ✔' : 'Save for Later'}
                             </button>
+                            <a href="${job.source_url}" target="_blank" class="btn-action bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 inline-block">Apply Now</a>
                         </div>
                     </div>
                 `;
@@ -439,8 +440,6 @@
                 jobInteractionState[jobId] = 'saved';
                 button.textContent = 'Saved ✔';
                 button.disabled = true;
-                button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-                button.classList.add('bg-green-600', 'cursor-not-allowed');
                 updateSavedJobsList();
             }
         }
@@ -490,10 +489,8 @@
             const originalCard = jobMatchesList.querySelector(`.card[data-job-id="${jobId}"]`);
             if (originalCard) {
                 const saveButton = originalCard.querySelector('button[data-action="save"]');
-                saveButton.textContent = 'Save';
+                saveButton.textContent = 'Save for Later';
                 saveButton.disabled = false;
-                saveButton.classList.remove('bg-green-600', 'cursor-not-allowed');
-                saveButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
             }
         }
 
